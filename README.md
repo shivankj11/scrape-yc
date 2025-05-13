@@ -18,3 +18,7 @@ Enter batch name when prompted (eg. 'Spring 2025')
 - website
 - url
 - githubs
+
+## Requirements
+
+`requests`

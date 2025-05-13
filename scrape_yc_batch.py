@@ -1,5 +1,4 @@
 import requests
-from bs4 import BeautifulSoup
 from typing import List, Dict, Any
 import re
 import csv
@@ -10,44 +9,40 @@ headers = {
     'Accept-Language': 'en-US,en;q=0.9'
 }
 
+baseurl = "https://api.ycombinator.com/v0.1/companies"
+
 def scrape_batch(batch : str) -> List[Dict[str, Any]]:
     data = []
 
-    page = 0
+    page_ct = 0
     while True:
-        response = requests.get(f'https://api.ycombinator.com/v0.1/companies?batch={batch}&page={page}', headers=headers)
+        pageurl = f"{baseurl}?batch={batch}&page={page_ct}"
+        response = requests.get(pageurl, headers=headers)
         response.raise_for_status()
-        page_data = response.json()
 
-        print(f"Batch {batch} Page {page_data['page'] + 1} of {page_data['totalPages']}")
+        page_data = response.json()
+        print(f"Progress: {page_data['page'] + 1}/{page_data['totalPages']}\n\tPage: {pageurl}")
 
         for company in page_data['companies']:
+            html = requests.get(company['website'], headers=headers)
             try:
-                html = requests.get(company['website'], headers=headers)
-                html_text = html.text
-                githubs = re.findall(r'github.com\/[-A-Za-z0-9_./]+', html_text)
-                # print(f"{company['name']}, {company['website']}, {company['url']}, [{'|'.join(githubs)}]")
-                data.append({
-                    'name': company['name'],
-                    'website': company['website'],
-                    'url': company['url'],
-                    'githubs': githubs
-                })
-            except Exception as e:
-                # print(f"{company['name']}, {company['website']} #SITEDOWN, {company['url']}, []")
-                data.append({
-                    'name': company['name'],
-                    'website': company['website'],
-                    'url': company['url'],
-                    'githubs': []
-                })
+                githubs = re.findall(r'github.com\/[-A-Za-z0-9_./]+', html.text)
+            except:
+                githubs = []
+            data.append({
+                'name': company['name'],
+                'website': company['website'],
+                'url': company['url'],
+                'githubs': githubs
+            })
 
-        if 'nextPage' not in page_data or page_data['nextPage'] is None:
+        if 'nextPage' not in page_data:
             break
         else:
-            page += 1
+            page_ct += 1
         
     return data
+
 
 def write_sheet(batch : str, data : List[Dict[str, Any]]) -> None:
     if len(data) == 0:
@@ -62,8 +57,8 @@ def write_sheet(batch : str, data : List[Dict[str, Any]]) -> None:
 
     print(f"Data written to {batch}.csv")    
 
+
 if __name__ == '__main__':
     batch = input('Enter batch name: ')
     batch_data = scrape_batch(batch)
-
     write_sheet(batch, batch_data)
