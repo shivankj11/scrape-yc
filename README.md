@@ -5,19 +5,23 @@ Scrape YC batch data from YC API and save it to a CSV file.
 ## Usage
 
 ```bash
-python3 scrape_yc_batch.py
+pip install scrape-yc-batch
+scrape-yc-batch --batch "Spring 2025" -o "spring_2025.csv"
 ```
-Enter batch name when prompted (eg. 'Spring 2025')
+
+Or, an example calling the script directly:
+```bash
+python3 scrape_yc_batch.py --batch "Spring 2025" -o "spring_2025.csv"
+```
 
 ## Output
 
 1. Print statement for each page of companies scraped from YC API
 
-2. a CSV file with the following columns:
+2. A CSV file with the following columns:
 - name
 - website
-- url
-- githubs
+- url of yc page
 
 ## Requirements
 

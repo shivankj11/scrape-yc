@@ -1,0 +1,19 @@
+[project]
+name = "scrape-yc-batch"
+version = "0.1.0"
+authors = [
+  { name="Shivank Joshi", email="shivank@iseedvc.com" },
+]
+description = "Scrape YC batch data from YC API and save it to a CSV file."
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICENSE*"]
+
+[project.urls]
+Homepage = "https://github.com/shivankj11/scrape-yc"
+Issues = "https://github.com/shivankj11/scrape-yc/issues"
