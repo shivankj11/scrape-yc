@@ -1,41 +1,59 @@
 # scrape-yc
 
-Scrape YC batch data from YC API and save it to a CSV file.
+### Functionalities
+1. Scrape YC batch data from YC API and save it to a CSV file
+2. Create a Notion database in a Notion page and add YC companies from the given batch
+3. Update an existing Notion database with fresh batch data
+
 
 ## Usage
 
 ```bash
 git clone https://github.com/shivankj11/scrape-yc
-python3 .../scrape_yc_batch.py --batch <batch_name> -o <filename.csv>
 ```
 
-Example (calling the script directly):
+### Arguments
+`--batch`  (Required)  Name of the YC batch (e.g., "Spring 2025", "Fall 2024", etc.)
+
+`--page_id` (Required) Notion page ID where the database will be created
+
+`--update_db` (Optional) Notion database ID to update with fresh batch data
+
+### Examples
+Scraping data from a YC batch and saving it to a CSV file:
 ```bash
 python3 scrape_yc_batch.py --batch "Spring 2025" -o "spring_2025.csv"
 ```
 
-Example (creating a Database in a Notion page and dumping batch info into it):
+Creating a Database in a Notion page and dumping batch info into it:
 ```bash
 python3 batch_to_notion.py --batch "Spring 2025" --page_id "<page_id>"
 ```
 
-## 1. Scraping Script Output
+Loading an existing Database in a Notion page and dumping batch info into it:
+```bash
+python3 batch_to_notion.py --batch "Spring 2025" --page_id "<page_id>" --update_db "<db_id>"
+```
 
-1. A CSV file with the following columns:
-- name
-- website
-- yc page
+## Scraping Script Output
 
-2. Console output
+- A CSV file with the following columns:
+    1. name
+    2. website
+    3. yc page
 
-## 2. Notion Script Output
+- Console output
 
-1. A Database in a Notion page with the following columns:
-- name
-- website
-- yc page
+## Notion Script Output
 
-2. Console output
+- A Database in a Notion page with the following columns:
+    1. name
+    2. website
+    3. yc page
+
+- Console output:
+    1. Progress tracking
+    2. Names of all added startups
 
 ## Requirements
 
